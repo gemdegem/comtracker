@@ -1,5 +1,6 @@
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import ButtonFetch from "./ButtonFetch";
+import MainComponent from "./AddressQueryTool/MainQueryComponent";
 
 export function ResizableDashboard() {
   return (
@@ -7,7 +8,7 @@ export function ResizableDashboard() {
       <ResizablePanel defaultSize={30}>
         <div className="flex h-full items-center justify-center">
           <span className="font-semibold">One</span>
-          <ButtonFetch />
+          <MainComponent />
         </div>
       </ResizablePanel>
       <ResizableHandle />
