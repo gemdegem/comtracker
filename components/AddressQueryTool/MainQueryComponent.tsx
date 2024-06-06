@@ -1,25 +1,19 @@
+// Twoje komponenty React i hooki
 import React, { useState } from "react";
 import AddressInput from "./AddressInput";
 import ButtonFetch from "./ButtonFetch";
 import useCoinPaths from "@/app/hooks/useCoinPaths";
-import { query, coinPathsVariables, CoinPathsVariablesInterface } from "@/lib/api/apiService";
+import { query, coinPathsVariables } from "@/lib/api/apiService";
 
 const MainComponent: React.FC = () => {
-  const [initialAddress, setInitialAddress] = useState(coinPathsVariables.initialAddress);
-  const [receiverAddress, setReceiverAddress] = useState(coinPathsVariables.receiverAddress);
+  const [initialAddress, setInitialAddress] = useState(coinPathsVariables.firstAddress);
+  const [receiverAddress, setReceiverAddress] = useState(coinPathsVariables.secondAddress);
   const { fetchCoinPaths, data, loading, error } = useCoinPaths();
 
   const handleCheckConnections = () => {
-    const variables: CoinPathsVariablesInterface = {
-      network: coinPathsVariables.network,
-      initialAddress,
-      receiverAddress,
-      inboundDepth: coinPathsVariables.inboundDepth,
-      outboundDepth: coinPathsVariables.outboundDepth,
-      limit: coinPathsVariables.limit,
-      currency: coinPathsVariables.currency,
-      from: coinPathsVariables.from,
-      till: coinPathsVariables.till,
+    const variables = {
+      firstAddress: initialAddress,
+      secondAddress: receiverAddress,
     };
     fetchCoinPaths({ query, variables });
   };
