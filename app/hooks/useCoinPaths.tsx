@@ -3,14 +3,8 @@
 import { useState } from "react";
 
 interface CoinPathsVariables {
-  network: string;
-  address: string;
-  inboundDepth: number;
-  outboundDepth: number;
-  limit: number;
-  currency: string;
-  from: string;
-  till: string;
+  firstAddress: string;
+  secondAddress: string;
 }
 
 interface QueryVariables {

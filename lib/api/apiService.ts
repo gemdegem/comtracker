@@ -1,25 +1,20 @@
 // lib/api/apiService.ts
 
 export interface CoinPathsVariablesInterface {
-  network: string;
-  initialAddress: string;
-  receiverAddress: string;
-  inboundDepth: number;
-  outboundDepth: number;
-  limit: number;
-  currency: string;
-  from: string | null;
-  till: string | null;
+  firstAddress: string;
+  secondAddress: string;
 }
 
 export const query = `
-query MyQuery($network: EthereumNetwork!, $initialAddress: String!, $receiverAddress: String!, $inboundDepth: Int!, $outboundDepth: Int!, $limit: Int!, $currency: String!, $from: ISO8601DateTime, $till: ISO8601DateTime) {
-  ethereum(network: $network) {
+query MyQuery($firstAddress: String!, $secondAddress: String!) {
+  ethereum(network: ethereum) {
     inbound: coinpath(
-      initialAddress: {is: $initialAddress}
-      depth: {lteq: $inboundDepth}
-      options: {direction: inbound, asc: "depth", desc: "amount", limitBy: {each: "depth", limit: $limit}}
-      date: {since: $from, till: $till}
+      initialAddress: {is: $firstAddress}
+      sender: {is: $secondAddress}
+      currency: {}
+      depth: {lteq: 1}
+      options: {direction: inbound, asc: "depth", desc: "amount", limitBy: {each: "depth", limit: 10}}
+      date: {since: null, till: null}
     ) {
       sender {
         address
@@ -31,6 +26,8 @@ query MyQuery($network: EthereumNetwork!, $initialAddress: String!, $receiverAdd
             name
           }
         }
+        receiversCount
+        sendersCount
       }
       receiver {
         address
@@ -42,6 +39,8 @@ query MyQuery($network: EthereumNetwork!, $initialAddress: String!, $receiverAdd
             name
           }
         }
+        receiversCount
+        sendersCount
       }
       amount
       currency {
@@ -49,14 +48,17 @@ query MyQuery($network: EthereumNetwork!, $initialAddress: String!, $receiverAdd
       }
       depth
       count
+      transactions {
+        txHash
+      }
     }
     outbound: coinpath(
-      initialAddress: {is: $initialAddress}
-      receiver: {is: $receiverAddress}
-      currency: {is: $currency}
-      depth: {lteq: $outboundDepth}
-      options: {asc: "depth", desc: "amount", limitBy: {each: "depth", limit: $limit}}
-      date: {since: $from, till: $till}
+      initialAddress: {is: $firstAddress}
+      receiver: {is: $secondAddress}
+      currency: {}
+      depth: {lteq: 2}
+      options: {asc: "depth", desc: "amount", limitBy: {each: "depth", limit: 10}}
+      date: {since: null, till: null}
     ) {
       sender {
         address
@@ -68,6 +70,8 @@ query MyQuery($network: EthereumNetwork!, $initialAddress: String!, $receiverAdd
             name
           }
         }
+        receiversCount
+        sendersCount
       }
       receiver {
         address
@@ -79,6 +83,8 @@ query MyQuery($network: EthereumNetwork!, $initialAddress: String!, $receiverAdd
             name
           }
         }
+        receiversCount
+        sendersCount
       }
       amount
       currency {
@@ -86,19 +92,15 @@ query MyQuery($network: EthereumNetwork!, $initialAddress: String!, $receiverAdd
       }
       depth
       count
+      transactions {
+        txHash
+      }
     }
   }
 }
 `;
 
 export const coinPathsVariables: CoinPathsVariablesInterface = {
-  network: "ethereum",
-  initialAddress: "0xCd48E64df29Ac1972D609020d7619028f071B108",
-  receiverAddress: "0xb7238bBb01F2f83631355259b8c24e329A7d0ebb",
-  inboundDepth: 1,
-  outboundDepth: 1,
-  limit: 20,
-  currency: "ETH",
-  from: "2015-09-01T23:59:59",
-  till: "2024-04-30T11:59:59",
+  firstAddress: "0xc7F67B5516cF5C841cB58a4a8a95c5353e75B117",
+  secondAddress: "0x750F5a02F88B57cAdd982D6893DD29C4Af4162Fc",
 };
