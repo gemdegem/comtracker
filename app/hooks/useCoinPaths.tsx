@@ -48,9 +48,9 @@ export default function useCoinPaths() {
       const formattedData = result.data.ethereum.outbound.map((tx: any) => {
         let formattedAmount;
         if (tx.currency.symbol === "ETH" || tx.currency.symbol === "BTC") {
-          formattedAmount = tx.amount.toFixed(3);
+          formattedAmount = tx.amount.toFixed(1);
         } else {
-          formattedAmount = tx.amount.toFixed(2);
+          formattedAmount = tx.amount.toFixed(0);
         }
 
         return {

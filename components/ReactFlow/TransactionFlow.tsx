@@ -16,6 +16,8 @@ interface Transaction {
 interface CustomNodeData {
   label: string;
   transactionCount: number;
+  hasSourceHandles: boolean;
+  hasTargetHandles: boolean;
 }
 
 interface CustomEdgeData {
@@ -40,10 +42,18 @@ const TransactionFlow: React.FC<TransactionFlowProps> = ({ transactions }) => {
     let xOffset = 150; // Start position for the first transaction horizontally
 
     const edgeCounts: { [key: string]: number } = {};
+    const nodeConnections: { [key: string]: { hasSourceHandles: boolean; hasTargetHandles: boolean } } = {};
 
     transactions.forEach((tx, index) => {
       const sourceId = `node-${tx.sender}`;
       const targetId = `node-${tx.receiver}`;
+
+      if (!nodeConnections[sourceId]) {
+        nodeConnections[sourceId] = { hasSourceHandles: true, hasTargetHandles: false };
+      }
+      if (!nodeConnections[targetId]) {
+        nodeConnections[targetId] = { hasSourceHandles: false, hasTargetHandles: true };
+      }
 
       const edgeKey = `${sourceId}-${targetId}`;
       const edgeCount = edgeCounts[edgeKey] || 0;
@@ -52,27 +62,29 @@ const TransactionFlow: React.FC<TransactionFlowProps> = ({ transactions }) => {
       if (!nodesTemp.some((node) => node.id === sourceId)) {
         nodesTemp.push({
           id: sourceId,
-          data: { label: tx.sender, transactionCount: edgeCounts[edgeKey] },
+          data: { label: tx.sender, transactionCount: edgeCounts[edgeKey], ...nodeConnections[sourceId] },
           position: { x: xOffset, y: 300 },
           type: "custom",
         });
       } else {
-        // Update transaction count for existing node
+        // Update transaction count and connections for existing node
         const nodeIndex = nodesTemp.findIndex((node) => node.id === sourceId);
         nodesTemp[nodeIndex].data.transactionCount = edgeCounts[edgeKey];
+        nodesTemp[nodeIndex].data.hasSourceHandles = true;
       }
 
       if (!nodesTemp.some((node) => node.id === targetId)) {
         nodesTemp.push({
           id: targetId,
-          data: { label: tx.receiver, transactionCount: edgeCounts[edgeKey] },
+          data: { label: tx.receiver, transactionCount: edgeCounts[edgeKey], ...nodeConnections[targetId] },
           position: { x: xOffset, y: 450 },
           type: "custom",
         });
       } else {
-        // Update transaction count for existing node
+        // Update transaction count and connections for existing node
         const nodeIndex = nodesTemp.findIndex((node) => node.id === targetId);
         nodesTemp[nodeIndex].data.transactionCount = edgeCounts[edgeKey];
+        nodesTemp[nodeIndex].data.hasTargetHandles = true;
       }
 
       const sourceHandle = `source-${edgeCount}`;

@@ -1,18 +1,20 @@
 import React from "react";
 import { Handle, Position } from "reactflow";
 
-type CustomNodeProps = {
-  data: {
-    transactionCount: number;
-    label: string;
-  };
-};
-
-const CustomNode = ({ data }: CustomNodeProps) => {
+const CustomNode = ({ data }: { data: any }) => {
   const handles = [];
-  for (let i = 0; i < data.transactionCount; i++) {
-    handles.push(<Handle key={`source-${i}`} type="source" position={Position.Bottom} id={`source-${i}`} style={{ left: `${(i + 1) * (100 / (data.transactionCount + 1))}%` }} />);
-    handles.push(<Handle key={`target-${i}`} type="target" position={Position.Top} id={`target-${i}`} style={{ left: `${(i + 1) * (100 / (data.transactionCount + 1))}%` }} />);
+
+  if (data.transactionCount > 0) {
+    const handleSpacing = 30; // Adjust this value for more or less spacing
+
+    for (let i = 0; i < data.transactionCount; i++) {
+      if (data.hasSourceHandles) {
+        handles.push(<Handle key={`source-${i}`} type="source" position={Position.Bottom} id={`source-${i}`} style={{ left: `${(i + 1) * (100 / (data.transactionCount + 1))}%`, marginLeft: handleSpacing * i }} />);
+      }
+      if (data.hasTargetHandles) {
+        handles.push(<Handle key={`target-${i}`} type="target" position={Position.Top} id={`target-${i}`} style={{ left: `${(i + 1) * (100 / (data.transactionCount + 1))}%`, marginLeft: handleSpacing * i }} />);
+      }
+    }
   }
 
   return (
