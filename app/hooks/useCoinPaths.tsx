@@ -1,5 +1,3 @@
-// hooks/useCoinPaths.ts
-
 import { useState } from "react";
 
 interface CoinPathsVariables {
@@ -12,12 +10,22 @@ interface QueryVariables {
   variables: CoinPathsVariables;
 }
 
+interface Transaction {
+  sender: string;
+  receiver: string;
+  amount: string;
+  currency: string;
+  depth: number;
+  count: number;
+  txHash: string;
+}
+
 export default function useCoinPaths() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const fetchCoinPaths = async (variables: QueryVariables) => {
+  const fetchCoinPaths = async (variables: QueryVariables): Promise<Transaction[]> => {
     setLoading(true);
     console.log("Sending request with variables:", variables);
     try {
@@ -35,12 +43,35 @@ export default function useCoinPaths() {
       }
       const result = await response.json();
       console.log("Data received:", result);
-      setData(result);
+
+      // Format the response data
+      const formattedData = result.data.ethereum.outbound.map((tx: any) => {
+        let formattedAmount;
+        if (tx.currency.symbol === "ETH" || tx.currency.symbol === "BTC") {
+          formattedAmount = tx.amount.toFixed(3);
+        } else {
+          formattedAmount = tx.amount.toFixed(2);
+        }
+
+        return {
+          sender: tx.sender.address,
+          receiver: tx.receiver.address,
+          amount: formattedAmount,
+          currency: tx.currency.symbol,
+          depth: tx.depth,
+          count: tx.count,
+          txHash: tx.transactions[0].txHash,
+        };
+      });
+
+      setData(formattedData);
       setLoading(false);
+      return formattedData;
     } catch (error) {
       console.error("Fetch error:", error);
       setError(error as Error);
       setLoading(false);
+      return [];
     }
   };
 

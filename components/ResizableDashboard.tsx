@@ -1,15 +1,17 @@
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import ButtonFetch from "./ButtonFetch";
 import MainComponent from "./AddressQueryTool/MainQueryComponent";
 import TransactionFlow from "./ReactFlow/TransactionFlow";
+import React, { useState } from "react";
 
 export function ResizableDashboard() {
+  const [data, setData] = useState<any[]>([]);
+
   return (
     <ResizablePanelGroup direction="horizontal" className="min-h-screen w-full">
       <ResizablePanel defaultSize={30}>
         <div className="flex h-full items-center justify-center">
           <span className="font-semibold">One</span>
-          <MainComponent />
+          <MainComponent setData={setData} />
         </div>
       </ResizablePanel>
       <ResizableHandle />
@@ -18,7 +20,7 @@ export function ResizableDashboard() {
           <ResizablePanel defaultSize={35}>
             <div className="flex h-full items-center justify-center">
               <span className="font-semibold">Two</span>
-              <TransactionFlow  />
+              <TransactionFlow transactions={data} />
             </div>
           </ResizablePanel>
           <ResizableHandle />
