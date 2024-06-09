@@ -17,14 +17,13 @@ export function ResizableDashboard() {
       <ResizableHandle />
       <ResizablePanel>
         <ResizablePanelGroup direction="vertical">
-          <ResizablePanel defaultSize={35}>
+          <ResizablePanel defaultSize={55}>
             <div className="flex h-full items-center justify-center">
-              <span className="font-semibold">Two</span>
               <TransactionFlow transactions={data} />
             </div>
           </ResizablePanel>
           <ResizableHandle />
-          <ResizablePanel defaultSize={65}>
+          <ResizablePanel defaultSize={45}>
             <div className="flex h-full items-center justify-center">
               <span className="font-semibold">Three</span>
             </div>
