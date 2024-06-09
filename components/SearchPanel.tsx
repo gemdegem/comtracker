@@ -12,7 +12,7 @@ export default function SearchPanel({ setSearchData }: SearchPanelProps) {
 	const [formValues, setFormValues] = useState<SearchObject>({
 		senderAddress: '0xc7F67B5516cF5C841cB58a4a8a95c5353e75B117',
 		receiverAddress: '0x750F5a02F88B57cAdd982D6893DD29C4Af4162Fc',
-		chain: 'Ethereum',
+		chain: 'ethereum',
 	})
 
 	const { fetchCoinPaths, data, loading, error } = useCoinPaths()

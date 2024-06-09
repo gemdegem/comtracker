@@ -4,11 +4,8 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { SearchObject } from '@/lib/types'
-import {
-	IconArrowLeft,
-	IconCirclesRelation,
-	IconLoader2,
-} from '@tabler/icons-react'
+import { ChainCombobox } from './ChainCombobox'
+import { IconCirclesRelation, IconLoader2 } from '@tabler/icons-react'
 
 interface SearchFormProps {
 	formValues: SearchObject
@@ -31,13 +28,20 @@ export function SearchForm({
 		})
 	}
 
+	const handleChainChange = (value: string) => {
+		setFormValues({
+			...formValues,
+			chain: value,
+		})
+	}
+
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		findConnections()
 	}
 
 	return (
-		<form className="my-8" onSubmit={handleSubmit}>
+		<form className="my-8 w-full" onSubmit={handleSubmit}>
 			<LabelInputContainer className="mb-4">
 				<Label htmlFor="senderAddress">Sender Address</Label>
 				<Input
@@ -62,16 +66,9 @@ export function SearchForm({
 				/>
 			</LabelInputContainer>
 
-			<LabelInputContainer className="mb-4">
+			<LabelInputContainer className="w-full mb-4">
 				<Label htmlFor="chain">Chain</Label>
-				<Input
-					id="chain"
-					name="chain"
-					placeholder="Ethereum"
-					type="text"
-					value={formValues.chain}
-					onChange={handleChange}
-				/>
+				<ChainCombobox value={formValues.chain} onChange={handleChainChange} />
 			</LabelInputContainer>
 
 			<div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
