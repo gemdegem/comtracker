@@ -5,7 +5,7 @@ const CustomNode = ({ data }: { data: any }) => {
   const handles = [];
 
   if (data.transactionCount > 0) {
-    const handleSpacing = 30; // Adjust this value for more or less spacing
+    const handleSpacing = 30;
 
     for (let i = 0; i < data.transactionCount; i++) {
       if (data.hasSourceHandles) {

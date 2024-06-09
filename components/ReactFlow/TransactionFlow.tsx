@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import ReactFlow, { Background, Controls, Node, Edge, useNodesState, useEdgesState, Position } from "reactflow";
 import "reactflow/dist/style.css";
-import CustomNode from "./CustomNode"; // Import custom node component
+import CustomNode from "./CustomNode";
 
 interface Transaction {
   sender: string;
@@ -35,11 +35,11 @@ const TransactionFlow: React.FC<TransactionFlowProps> = ({ transactions }) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
   useEffect(() => {
-    if (transactions.length === 0) return; // Avoid processing when no transactions are available
+    if (transactions.length === 0) return;
 
     const nodesTemp: Node<CustomNodeData>[] = [];
     const edgesTemp: Edge<CustomEdgeData>[] = [];
-    let xOffset = 150; // Start position for the first transaction horizontally
+    let xOffset = 150;
 
     const edgeCounts: { [key: string]: number } = {};
     const nodeConnections: { [key: string]: { hasSourceHandles: boolean; hasTargetHandles: boolean } } = {};
@@ -67,7 +67,6 @@ const TransactionFlow: React.FC<TransactionFlowProps> = ({ transactions }) => {
           type: "custom",
         });
       } else {
-        // Update transaction count and connections for existing node
         const nodeIndex = nodesTemp.findIndex((node) => node.id === sourceId);
         nodesTemp[nodeIndex].data.transactionCount = edgeCounts[edgeKey];
         nodesTemp[nodeIndex].data.hasSourceHandles = true;
@@ -81,7 +80,6 @@ const TransactionFlow: React.FC<TransactionFlowProps> = ({ transactions }) => {
           type: "custom",
         });
       } else {
-        // Update transaction count and connections for existing node
         const nodeIndex = nodesTemp.findIndex((node) => node.id === targetId);
         nodesTemp[nodeIndex].data.transactionCount = edgeCounts[edgeKey];
         nodesTemp[nodeIndex].data.hasTargetHandles = true;
@@ -101,7 +99,7 @@ const TransactionFlow: React.FC<TransactionFlowProps> = ({ transactions }) => {
         style: { stroke: "#ffcc00" },
       });
 
-      xOffset += 300; // Increase xOffset for the next transaction
+      xOffset += 300;
     });
 
     setNodes(nodesTemp);
