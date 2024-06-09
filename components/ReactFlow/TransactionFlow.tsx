@@ -25,7 +25,7 @@ interface TransactionFlowProps {
 }
 
 const nodeStyles = {
-  width: 300,
+  width: 320,
   padding: 10,
   borderRadius: 5,
   backgroundColor: "#fff",
