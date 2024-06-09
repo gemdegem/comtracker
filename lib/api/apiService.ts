@@ -12,7 +12,7 @@ query MyQuery($firstAddress: String!, $secondAddress: String!) {
       initialAddress: {is: $firstAddress}
       sender: {is: $secondAddress}
       currency: {}
-      depth: {lteq: 1}
+      depth: {lteq: 2}
       options: {direction: inbound, asc: "depth", desc: "amount", limitBy: {each: "depth", limit: 10}}
       date: {since: null, till: null}
     ) {
