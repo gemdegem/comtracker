@@ -1,6 +1,7 @@
 import { useEffect } from "react";
-import ReactFlow, { Background, Controls, Node, Edge, useNodesState, useEdgesState } from "reactflow";
+import ReactFlow, { Background, Controls, Node, Edge, useNodesState, useEdgesState, Position } from "reactflow";
 import "reactflow/dist/style.css";
+import CustomNode from "./CustomNode"; // Import custom node component
 
 interface Transaction {
   sender: string;
@@ -14,6 +15,7 @@ interface Transaction {
 
 interface CustomNodeData {
   label: string;
+  transactionCount: number;
 }
 
 interface CustomEdgeData {
@@ -24,13 +26,7 @@ interface TransactionFlowProps {
   transactions: Transaction[];
 }
 
-const nodeStyles = {
-  width: 320,
-  padding: 10,
-  borderRadius: 5,
-  backgroundColor: "#fff",
-  border: "1px solid #ddd",
-};
+const nodeTypes = { custom: CustomNode };
 
 const TransactionFlow: React.FC<TransactionFlowProps> = ({ transactions }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -49,39 +45,48 @@ const TransactionFlow: React.FC<TransactionFlowProps> = ({ transactions }) => {
       const sourceId = `node-${tx.sender}`;
       const targetId = `node-${tx.receiver}`;
 
-      const sourcePosition = { x: xOffset, y: 300 };
-      const targetPosition = { x: xOffset, y: 450 };
+      const edgeKey = `${sourceId}-${targetId}`;
+      const edgeCount = edgeCounts[edgeKey] || 0;
+      edgeCounts[edgeKey] = edgeCount + 1;
 
       if (!nodesTemp.some((node) => node.id === sourceId)) {
         nodesTemp.push({
           id: sourceId,
-          data: { label: tx.sender },
-          position: sourcePosition,
-          style: nodeStyles,
+          data: { label: tx.sender, transactionCount: edgeCounts[edgeKey] },
+          position: { x: xOffset, y: 300 },
+          type: "custom",
         });
+      } else {
+        // Update transaction count for existing node
+        const nodeIndex = nodesTemp.findIndex((node) => node.id === sourceId);
+        nodesTemp[nodeIndex].data.transactionCount = edgeCounts[edgeKey];
       }
 
       if (!nodesTemp.some((node) => node.id === targetId)) {
         nodesTemp.push({
           id: targetId,
-          data: { label: tx.receiver },
-          position: targetPosition,
-          style: nodeStyles,
+          data: { label: tx.receiver, transactionCount: edgeCounts[edgeKey] },
+          position: { x: xOffset, y: 450 },
+          type: "custom",
         });
+      } else {
+        // Update transaction count for existing node
+        const nodeIndex = nodesTemp.findIndex((node) => node.id === targetId);
+        nodesTemp[nodeIndex].data.transactionCount = edgeCounts[edgeKey];
       }
 
-      const edgeKey = `${sourceId}-${targetId}`;
-      const edgeOffset = (edgeCounts[edgeKey] || 0) * 10;
-      edgeCounts[edgeKey] = (edgeCounts[edgeKey] || 0) + 1;
+      const sourceHandle = `source-${edgeCount}`;
+      const targetHandle = `target-${edgeCount}`;
 
       edgesTemp.push({
         id: `e${index}-${tx.txHash}`,
         source: sourceId,
         target: targetId,
+        sourceHandle: sourceHandle,
+        targetHandle: targetHandle,
         label: `${tx.amount} ${tx.currency}`,
         animated: true,
         style: { stroke: "#ffcc00" },
-        labelStyle: { transform: `translateY(${edgeOffset}px)` },
       });
 
       xOffset += 300; // Increase xOffset for the next transaction
@@ -93,7 +98,7 @@ const TransactionFlow: React.FC<TransactionFlowProps> = ({ transactions }) => {
 
   return (
     <div style={{ height: 800, width: 800 }}>
-      <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange}>
+      <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} nodeTypes={nodeTypes}>
         <Background color="#aaa" gap={16} />
         <Controls />
       </ReactFlow>
