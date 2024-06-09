@@ -1,35 +1,35 @@
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import MainComponent from "./AddressQueryTool/MainQueryComponent";
-import TransactionFlow from "./ReactFlow/TransactionFlow";
-import React, { useState } from "react";
+'use client'
+
+import {
+	ResizableHandle,
+	ResizablePanel,
+	ResizablePanelGroup,
+} from '@/components/ui/resizable'
+import SearchPanel from './SearchPanel'
+import TransactionFlow from './ReactFlow/TransactionFlow'
+import React, { useState } from 'react'
+import SearchResultsTable from './SearchResultsTable'
 
 export function ResizableDashboard() {
-  const [data, setData] = useState<any[]>([]);
+	const [searchData, setSearchData] = useState<any>([])
 
-  return (
-    <ResizablePanelGroup direction="horizontal" className="min-h-screen w-full">
-      <ResizablePanel defaultSize={30}>
-        <div className="flex h-full items-center justify-center">
-          <span className="font-semibold">One</span>
-          <MainComponent setData={setData} />
-        </div>
-      </ResizablePanel>
-      <ResizableHandle />
-      <ResizablePanel>
-        <ResizablePanelGroup direction="vertical">
-          <ResizablePanel defaultSize={55}>
-            <div className="flex h-full items-center justify-center">
-              <TransactionFlow transactions={data} />
-            </div>
-          </ResizablePanel>
-          <ResizableHandle />
-          <ResizablePanel defaultSize={45}>
-            <div className="flex h-full items-center justify-center">
-              <span className="font-semibold">Three</span>
-            </div>
-          </ResizablePanel>
-        </ResizablePanelGroup>
-      </ResizablePanel>
-    </ResizablePanelGroup>
-  );
+	return (
+		<ResizablePanelGroup direction="horizontal" className="min-h-screen w-full">
+			<ResizablePanel defaultSize={25} minSize={20} maxSize={30}>
+				<SearchPanel setSearchData={setSearchData} />
+			</ResizablePanel>
+			<ResizableHandle />
+			<ResizablePanel>
+				<ResizablePanelGroup direction="vertical">
+					<ResizablePanel defaultSize={55} maxSize={95}>
+						<TransactionFlow transactions={searchData} />
+					</ResizablePanel>
+					<ResizableHandle />
+					<ResizablePanel defaultSize={45} maxSize={95}>
+						<SearchResultsTable searchData={searchData} />
+					</ResizablePanel>
+				</ResizablePanelGroup>
+			</ResizablePanel>
+		</ResizablePanelGroup>
+	)
 }
