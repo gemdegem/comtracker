@@ -43,11 +43,11 @@ export default function TransactionFlow({
 	const [edges, setEdges, onEdgesChange] = useEdgesState([])
 
 	useEffect(() => {
-		if (transactions.length === 0) return // Avoid processing when no transactions are available
+		if (transactions.length === 0) return
 
 		const nodesTemp: Node<CustomNodeData>[] = []
 		const edgesTemp: Edge<CustomEdgeData>[] = []
-		let xOffset = 150 // Start position for the first transaction horizontally
+		let xOffset = 150
 
 		const edgeCounts: { [key: string]: number } = {}
 
@@ -67,7 +67,6 @@ export default function TransactionFlow({
 					type: 'custom',
 				})
 			} else {
-				// Update transaction count for existing node
 				const nodeIndex = nodesTemp.findIndex((node) => node.id === sourceId)
 				nodesTemp[nodeIndex].data.transactionCount = edgeCounts[edgeKey]
 			}
@@ -80,7 +79,6 @@ export default function TransactionFlow({
 					type: 'custom',
 				})
 			} else {
-				// Update transaction count for existing node
 				const nodeIndex = nodesTemp.findIndex((node) => node.id === targetId)
 				nodesTemp[nodeIndex].data.transactionCount = edgeCounts[edgeKey]
 			}
@@ -99,7 +97,7 @@ export default function TransactionFlow({
 				style: { stroke: '#ffcc00' },
 			})
 
-			xOffset += 300 // Increase xOffset for the next transaction
+			xOffset += 300
 		})
 
 		setNodes(nodesTemp)
