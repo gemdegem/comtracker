@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import ReactFlow, { Background, Controls, Node, Edge, useNodesState, useEdgesState, Position } from "reactflow";
 import "reactflow/dist/style.css";
-import CustomNode from "./CustomNode"; // Import custom node component
+import CustomNode from "./CustomNode";
 
 interface Transaction {
   sender: string;
@@ -16,6 +16,8 @@ interface Transaction {
 interface CustomNodeData {
   label: string;
   transactionCount: number;
+  hasSourceHandles: boolean;
+  hasTargetHandles: boolean;
 }
 
 interface CustomEdgeData {
@@ -33,17 +35,25 @@ const TransactionFlow: React.FC<TransactionFlowProps> = ({ transactions }) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
   useEffect(() => {
-    if (transactions.length === 0) return; // Avoid processing when no transactions are available
+    if (transactions.length === 0) return;
 
     const nodesTemp: Node<CustomNodeData>[] = [];
     const edgesTemp: Edge<CustomEdgeData>[] = [];
-    let xOffset = 150; // Start position for the first transaction horizontally
+    let xOffset = 150;
 
     const edgeCounts: { [key: string]: number } = {};
+    const nodeConnections: { [key: string]: { hasSourceHandles: boolean; hasTargetHandles: boolean } } = {};
 
     transactions.forEach((tx, index) => {
       const sourceId = `node-${tx.sender}`;
       const targetId = `node-${tx.receiver}`;
+
+      if (!nodeConnections[sourceId]) {
+        nodeConnections[sourceId] = { hasSourceHandles: true, hasTargetHandles: false };
+      }
+      if (!nodeConnections[targetId]) {
+        nodeConnections[targetId] = { hasSourceHandles: false, hasTargetHandles: true };
+      }
 
       const edgeKey = `${sourceId}-${targetId}`;
       const edgeCount = edgeCounts[edgeKey] || 0;
@@ -52,27 +62,27 @@ const TransactionFlow: React.FC<TransactionFlowProps> = ({ transactions }) => {
       if (!nodesTemp.some((node) => node.id === sourceId)) {
         nodesTemp.push({
           id: sourceId,
-          data: { label: tx.sender, transactionCount: edgeCounts[edgeKey] },
+          data: { label: tx.sender, transactionCount: edgeCounts[edgeKey], ...nodeConnections[sourceId] },
           position: { x: xOffset, y: 300 },
           type: "custom",
         });
       } else {
-        // Update transaction count for existing node
         const nodeIndex = nodesTemp.findIndex((node) => node.id === sourceId);
         nodesTemp[nodeIndex].data.transactionCount = edgeCounts[edgeKey];
+        nodesTemp[nodeIndex].data.hasSourceHandles = true;
       }
 
       if (!nodesTemp.some((node) => node.id === targetId)) {
         nodesTemp.push({
           id: targetId,
-          data: { label: tx.receiver, transactionCount: edgeCounts[edgeKey] },
+          data: { label: tx.receiver, transactionCount: edgeCounts[edgeKey], ...nodeConnections[targetId] },
           position: { x: xOffset, y: 450 },
           type: "custom",
         });
       } else {
-        // Update transaction count for existing node
         const nodeIndex = nodesTemp.findIndex((node) => node.id === targetId);
         nodesTemp[nodeIndex].data.transactionCount = edgeCounts[edgeKey];
+        nodesTemp[nodeIndex].data.hasTargetHandles = true;
       }
 
       const sourceHandle = `source-${edgeCount}`;
@@ -89,7 +99,7 @@ const TransactionFlow: React.FC<TransactionFlowProps> = ({ transactions }) => {
         style: { stroke: "#ffcc00" },
       });
 
-      xOffset += 300; // Increase xOffset for the next transaction
+      xOffset += 300;
     });
 
     setNodes(nodesTemp);
