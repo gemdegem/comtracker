@@ -12,6 +12,16 @@ interface QueryVariables {
   variables: CoinPathsVariables;
 }
 
+interface Transaction {
+  sender: string;
+  receiver: string;
+  amount: number;
+  currency: string;
+  depth: number;
+  count: number;
+  txHash: string;
+}
+
 export default function useCoinPaths() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -35,7 +45,19 @@ export default function useCoinPaths() {
       }
       const result = await response.json();
       console.log("Data received:", result);
-      setData(result);
+
+      // Format the response data
+      const formattedData = result.data.ethereum.outbound.map((tx: any) => ({
+        sender: tx.sender.address,
+        receiver: tx.receiver.address,
+        amount: tx.amount,
+        currency: tx.currency.symbol,
+        depth: tx.depth,
+        count: tx.count,
+        txHash: tx.transactions[0].txHash,
+      }));
+
+      setData(formattedData);
       setLoading(false);
     } catch (error) {
       console.error("Fetch error:", error);
