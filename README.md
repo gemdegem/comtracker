@@ -1,8 +1,23 @@
+
 # ComTracker v1
+
+
+<p align="center">
+<img src="https://github.com/gemdegem/comtracker/assets/94614019/9636730e-72b3-4d7f-be07-27a36a204688" alt="Comtracker landing" width="600"/>
+</p>
 
 ComTracker is a web application designed to uncover connections between Ethereum addresses. In its initial version (v1), users can input two Ethereum addresses to identify all transactions between them, including intermediate addresses ( in the application marked as depth 2). The application provides detailed information about the transaction time, the amount of cryptocurrency, and the type of cryptocurrency sent.
 
+
+<p align="center">
+<img src="https://github.com/gemdegem/comtracker/assets/94614019/a5445ed8-998e-40b2-bd00-b254f198c51a" alt="Comtracker landing" width="600"/>
+</p>
+
+
+
 Additionally, ComTracker offers a user-friendly interface for visualizing these connections, making it easier to understand the flow of funds and the relationships between different addresses. Built with Next.js, and Tailwind CSS, ReactFlow.
+
+![tracker](https://github.com/gemdegem/comtracker/assets/94614019/78b096bb-996b-4940-a960-34b3cc79e6e7)
 
 ## Getting Started
 
