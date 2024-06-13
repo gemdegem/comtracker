@@ -49,11 +49,14 @@ export default function TransactionFlow({ transactions }: TransactionFlowProps) 
       const edgeCount = edgeCounts[edgeKey] || 0;
       edgeCounts[edgeKey] = edgeCount + 1;
 
+      const yOffsetSender = 80 * tx.depth;
+      const yOffsetReceiver = 350;
+
       if (!nodesTemp.some((node) => node.id === sourceId)) {
         nodesTemp.push({
           id: sourceId,
           data: { label: tx.sender, transactionCount: edgeCounts[edgeKey] },
-          position: { x: xOffset, y: 150 },
+          position: { x: xOffset, y: yOffsetSender },
           type: "custom",
         });
       } else {
@@ -65,7 +68,7 @@ export default function TransactionFlow({ transactions }: TransactionFlowProps) 
         nodesTemp.push({
           id: targetId,
           data: { label: tx.receiver, transactionCount: edgeCounts[edgeKey] },
-          position: { x: xOffset, y: 350 },
+          position: { x: xOffset, y: yOffsetReceiver },
           type: "custom",
         });
       } else {
