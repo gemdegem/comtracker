@@ -41,9 +41,9 @@ Before you begin, ensure you have met the following requirements:
    The project uses environment variables for configuration. Create a .env.local file in the root directory and add the necessary variables:
    V1 bitquery api key. https://account.bitquery.io/user/api_v1/api_keys
 
-```bash
-BITQUERY_API_KEY=your_api_key_here
-```
+   ```bash
+   BITQUERY_API_KEY=your_api_key_here
+   ```
 
 ### Running the Development Server
 
