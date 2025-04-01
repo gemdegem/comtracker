@@ -1,11 +1,12 @@
-import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
+import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
 
+// Używamy naszego własnego API proxy zamiast bezpośredniego dostępu do Bitquery
 const client = new ApolloClient({
-  ssrMode: typeof window === "undefined",
+  ssrMode: typeof window === 'undefined',
   link: new HttpLink({
-    uri: "https://graphql.bitquery.io/",
+    uri: '/api/bitquery', // Używamy endpointu API proxy
     headers: {
-      "X-API-KEY": process.env.BITQUERY_API_KEY as string, //V1 api key
+      'Content-Type': 'application/json',
     },
   }),
   cache: new InMemoryCache(),
