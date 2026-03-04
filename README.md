@@ -2,7 +2,7 @@
 
 > **Blockchain forensics tool** for tracing fund flows between crypto wallets across Ethereum and Solana.
 
-!(public/hero.png)
+![Hero](./public/Hero.png)
 
 ![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=nextdotjs)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
@@ -18,14 +18,14 @@
 - **Interactive Flow Visualization** — Interactive node graph (React Flow + Dagre layout) with color-coded edges for inbound/outbound transactions.
 
 
-!(./public/graph.png)
+![Graph](./public/Coinpath.png)
 
 - **Node Expansion** — Click +/− on any node to explore its inbound/outbound neighbors on-demand.
-- **Address Intelligence** — Built-in label databases identify exchanges, DeFi protocols, scam addresses, and known entities (ScamSniffer, Etherscan labels, custom).
+- **Address Intelligence** — Built-in label databases identify exchanges, DeFi protocols, scam addresses, and known entities (scam database from [ScamSniffer](https://scamsniffer.io/), address intelligence via private scraping of [Etherscan](https://etherscan.io/), and public datasets like [dawsbot/eth-labels](https://github.com/dawsbot/eth-labels)).
 - **Token Overlap Analysis** — Find common holders between two tokens with auto-chain detection from contract address format.
 
 
-!./public/overlap.png
+![Token Overlap](./public/tokenoverlap.png)
 
 - **Data Table** — Sortable results table with explorer links, direction badges, and relative/absolute time toggle.
 - **3D Globe Landing** — Animated Three.js globe with arc animations.
