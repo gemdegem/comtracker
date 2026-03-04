@@ -1,6 +1,7 @@
 # Comtracker
 
 > **Blockchain forensics tool** for tracing fund flows between crypto wallets across Ethereum and Solana.
+🖥️ **Desktop version only (for now!)** 📱 *Mobile version coming soon!*
 
 ![Hero](./public/Hero.png)
 
