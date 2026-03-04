@@ -22,5 +22,11 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "pack_dump.ts",
+    "pack_dump2.ts",
+    "reconstructed_part1.ts",
+    "solana.ts"
+  ]
 }

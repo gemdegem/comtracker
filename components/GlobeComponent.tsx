@@ -3,10 +3,29 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { IconArrowsExchange, IconTopologyStarRing3, IconShieldCheck } from '@tabler/icons-react'
 
 const World = dynamic(() => import('./ui/globe').then((m) => m.World), {
 	ssr: false,
 })
+
+const features = [
+	{
+		icon: IconArrowsExchange,
+		title: 'Track Transactions',
+		description: 'Trace direct and multi-hop transactions between wallet addresses across Ethereum and Solana.',
+	},
+	{
+		icon: IconTopologyStarRing3,
+		title: 'Visualize Flows',
+		description: 'Interactive graph visualization of fund flows with direction, amounts, and address labels.',
+	},
+	{
+		icon: IconShieldCheck,
+		title: 'Address Intelligence',
+		description: 'Identify exchanges, DeFi protocols, and flagged addresses with built-in label databases.',
+	},
+]
 
 export function GlobeComponent() {
 	const globeConfig = {
@@ -416,11 +435,29 @@ export function GlobeComponent() {
 						COMTRACKER
 					</h2>
 					<p className="text-center text-xs md:text-base font-light text-neutral-700 dark:text-neutral-200 max-w-xl mt-2 mx-auto">
-						TOOLS FOR IDENTIFYING INTERWALLET CONNECTIONS.
+						Blockchain forensics tool for tracing fund flows between crypto wallets. Supports Ethereum and Solana.
 					</p>
+
+					{/* Feature Cards */}
+					<div className="flex flex-col md:flex-row gap-4 mt-10 w-full max-w-2xl">
+						{features.map((feature, i) => (
+							<motion.div
+								key={feature.title}
+								initial={{ opacity: 0, y: 20 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.5, delay: 0.3 + i * 0.15 }}
+								className="flex-1 p-4 rounded-xl border border-slate-800 bg-black/40 backdrop-blur-sm hover:border-slate-600 transition-colors group"
+							>
+								<feature.icon className="w-6 h-6 text-cyan-400 mb-2 group-hover:text-cyan-300 transition-colors" />
+								<h3 className="text-sm font-medium text-white mb-1">{feature.title}</h3>
+								<p className="text-xs text-slate-400 leading-relaxed">{feature.description}</p>
+							</motion.div>
+						))}
+					</div>
+
 					<Link
 						href="/tracker"
-						className="group mt-20 inline-flex h-12 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-300 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 relative"
+						className="group mt-10 inline-flex h-12 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-300 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 relative"
 					>
 						Launch App
 						<span className="ml-1.5 transition-transform duration-200 ease-in-out transform group-hover:translate-x-1">

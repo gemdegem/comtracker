@@ -21,10 +21,12 @@ const blockchains = [
 	{
 		value: 'ethereum',
 		label: 'Ethereum',
+		icon: '⟠',
 	},
 	{
-		value: 'base',
-		label: 'Base',
+		value: 'solana',
+		label: 'Solana',
+		icon: '◎',
 	},
 ]
 
@@ -36,6 +38,8 @@ interface ComboboxProps {
 export function ChainCombobox({ value, onChange }: ComboboxProps) {
 	const [open, setOpen] = React.useState(false)
 
+	const selected = blockchains.find((b) => b.value === value)
+
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
@@ -44,10 +48,16 @@ export function ChainCombobox({ value, onChange }: ComboboxProps) {
 					aria-expanded={open}
 					className="w-full justify-between flex items-center"
 				>
-					{value
-						? blockchains.find((blockchain) => blockchain.value === value)
-								?.label
-						: 'Select chain...'}
+					<span className="flex items-center gap-2">
+						{selected ? (
+							<>
+								<span>{selected.icon}</span>
+								<span>{selected.label}</span>
+							</>
+						) : (
+							'Select chain...'
+						)}
+					</span>
 					<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 				</ComboboxTrigger>
 			</PopoverTrigger>
@@ -73,6 +83,7 @@ export function ChainCombobox({ value, onChange }: ComboboxProps) {
 											value === blockchain.value ? 'opacity-100' : 'opacity-0'
 										)}
 									/>
+									<span className="mr-2">{blockchain.icon}</span>
 									{blockchain.label}
 								</CommandItem>
 							))}

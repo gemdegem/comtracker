@@ -1,78 +1,158 @@
-# ComTracker v1
+# Comtracker
 
-<p align="center">
-<img src="https://github.com/gemdegem/comtracker/assets/94614019/9636730e-72b3-4d7f-be07-27a36a204688" alt="Comtracker landing" width="600"/>
-</p>
+> **Blockchain forensics tool** for tracing fund flows between crypto wallets across Ethereum and Solana.
 
-ComTracker is designed to uncover connections between Ethereum addresses. In its initial version (v1), users can input two Ethereum addresses to identify all transactions between them, including intermediate addresses ( in the application marked as depth 2). The application provides detailed information about the transaction time, the amount of cryptocurrency, and the type of cryptocurrency sent.
+!(public/hero.png)
 
-<p align="center">
-<img src="https://github.com/gemdegem/comtracker/assets/94614019/a5445ed8-998e-40b2-bd00-b254f198c51a" alt="Comtracker landing" width="600"/>
-</p>
+![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=nextdotjs)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-06B6D4?logo=tailwindcss)
+![React Flow](https://img.shields.io/badge/React_Flow-11-purple)
+![Three.js](https://img.shields.io/badge/Three.js-Globe-black?logo=threedotjs)
 
-Additionally, ComTracker offers a user-friendly interface for visualizing these connections, making it easier to understand the flow of funds and the relationships between different addresses. Built with Next.js, and Tailwind CSS, ReactFlow.
+---
 
-![tracker](https://github.com/gemdegem/comtracker/assets/94614019/78b096bb-996b-4940-a960-34b3cc79e6e7)
+## ✨ Features
 
-## Getting Started
+- **Multi-Chain Transaction Tracking** — Trace direct and multi-hop transactions between wallet addresses on **Ethereum** and **Solana**.
+- **Interactive Flow Visualization** — Interactive node graph (React Flow + Dagre layout) with color-coded edges for inbound/outbound transactions.
+
+
+!(./public/graph.png)
+
+- **Node Expansion** — Click +/− on any node to explore its inbound/outbound neighbors on-demand.
+- **Address Intelligence** — Built-in label databases identify exchanges, DeFi protocols, scam addresses, and known entities (ScamSniffer, Etherscan labels, custom).
+- **Token Overlap Analysis** — Find common holders between two tokens with auto-chain detection from contract address format.
+
+
+!./public/overlap.png
+
+- **Data Table** — Sortable results table with explorer links, direction badges, and relative/absolute time toggle.
+- **3D Globe Landing** — Animated Three.js globe with arc animations.
+- **Secure API Proxy** — Server-side API route ensures your Bitquery API key is never exposed to the browser.
+
+## ⚠️ Free Plan & Usage Limits
+
+**The deployed version of Comtracker currently runs on the Bitquery Free Plan.**
+
+Due to API constraints on the free tier:
+- The app may occasionally hit simultaneous request limits (we handle this gracefully with auto-retries).
+- Deep multi-hop searches or vast date ranges (especially on Solana) might be restricted by the query complexity timeouts.
+
+### Need broader capabilities?
+If the public deployment stops working due to quota exhaustion, or if you need to run heavier forensic analysis (deeper hops, wider date ranges, larger wallet networks), you have two options:
+1. **Host it yourself**: Clone the repo, swap in your own [Bitquery API key](https://account.bitquery.io/user/api_v1/api_keys), and run it locally.
+2. **Contact me**: Open a [GitHub Issue](https://github.com/gemdegem/comtracker/issues) to request deeper custom analysis.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 14 (App Router + Pages API) |
+| Language | TypeScript |
+| Styling | Tailwind CSS + Radix UI |
+| Visualization | React Flow + Dagre (transaction graph) |
+| 3D | Three.js + three-globe |
+| Animation | Framer Motion |
+| Data | Bitquery GraphQL API (V1 + V2) |
+| Components | shadcn/ui (Command, Popover, Table, Dialog) |
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-Before you begin, ensure you have met the following requirements:
-
-- Node.js (version 14 or higher)
-- npm (version 6 or higher) or yarn or pnpm or bun
-- A text editor like VS Code
+- Node.js ≥ 18
+- npm, yarn, pnpm, or bun
+- [Bitquery API key](https://account.bitquery.io/user/api_v1/api_keys)
 
 ### Installation
 
-1. **Clone the Repository:**
+```bash
+git clone https://github.com/gemdegem/comtracker.git
+cd comtracker
+npm install
+```
 
-   ```bash
-   git clone https://github.com/gemdegem/comtracker.git
-   cd comtracker
-   ```
+### Configuration
 
-2. **Install Dependencies:**
+Create a `.env` file from the template:
 
-   Depending on your package manager, run one of the following commands:
+```bash
+cp .env.example .env
+```
 
-   ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   # or
-   bun install
-   ```
+Add your Bitquery API key:
 
-3. **Environment Variables:**
-   The project uses environment variables for configuration. Create a `.env` file in the root directory and add the necessary variables:
-   V1 bitquery api key. https://account.bitquery.io/user/api_v1/api_keys
+```
+BITQUERY_API_KEY=your_key_here
+```
 
-   ```bash
+> ⚠️ Never commit your `.env` file. The `.gitignore` already excludes it.
 
-   NEXT_PUBLIC_BITQUERY_API_KEY=your_bitquery_api_key_here
+### Label Data (Optional)
 
-   BITQUERY_API_KEY=your_bitquery_api_key_here
-   ```
+For address intelligence, populate the `data/raw/` directory with label databases:
 
-   For security reasons, never commit your `.env` file to Git. The repository already includes a `.gitignore` rule to prevent this.
-   You can use the provided `.env.example` as a template.
+```
+data/raw/
+├── scamsniffer-all.json     # ScamSniffer phishing addresses
+├── dawsbot-accounts.json    # Dawsbot/eth-labels named accounts
+└── *.txt                    # Custom label files (filename = label)
+```
 
-### Running the Development Server
+Without these files the app works normally, but address labels won't be displayed.
 
-To start the development server, use one of the following commands:
+### Development
 
-    ```bash
-    npm run dev
-    # or
-    yarn dev
-    # or
-    pnpm dev
-    # or
-    bun dev
-    ```
+```bash
+npm run dev
+```
 
-Open http://localhost:3000 with your browser to see the application.
+Open [http://localhost:3000](http://localhost:3000) to see the application.
+
+## 📁 Project Structure
+
+```
+comtracker/
+├── app/
+│   ├── layout.tsx              # Root layout with font & providers
+│   ├── page.tsx                # Landing page (3D globe)
+│   └── tracker/page.tsx        # Tracker dashboard
+├── components/
+│   ├── GlobeComponent.tsx      # Landing page globe + feature cards
+│   ├── ResizableDashboard.tsx  # Main dashboard layout + state
+│   ├── SearchPanel.tsx         # Search form container + progress UI
+│   ├── SearchForm.tsx          # Address inputs with validation + auto-chain detect
+│   ├── SearchResultsTable.tsx  # Results data table
+│   ├── ChainCombobox.tsx       # Chain selector (Ethereum / Solana)
+│   ├── TokenOverlapForm.tsx    # Token overlap search with auto-chain detection
+│   ├── TokenOverlapTable.tsx   # Token overlap results
+│   ├── ReactFlow/
+│   │   ├── TransactionFlow.tsx # Graph visualization + Dagre layout
+│   │   ├── CustomNode.tsx      # Custom node with expand buttons & labels
+│   │   ├── GraphControls.tsx   # Min amount filter
+│   │   └── ParallelEdge.tsx    # Bidirectional multi-token edge rendering
+│   └── ui/                     # shadcn/ui primitives
+├── hooks/
+│   ├── useCoinPaths.tsx        # Main data fetching hook (cache, progressive loading)
+│   └── useTokenOverlap.tsx     # Token overlap fetch hook
+├── lib/
+│   ├── types.ts                # TypeScript types, validators
+│   ├── coinpath-queries.ts     # GraphQL query templates
+│   ├── label-engine.ts         # Address label engine (ScamSniffer, Dawsbot, custom)
+│   └── utils.ts                # Tailwind merge utility
+├── pages/api/
+│   ├── bitquery.ts             # Main API route (all backend logic)
+│   └── labels.ts               # Address label lookup endpoint
+├── data/
+│   ├── demo-transactions.ts    # Demo data for Try Demo button
+│   └── raw/                    # Label databases (gitignored)
+└── styles/
+    └── globals.css             # Tailwind base + CSS variables
+```
+
+## 📄 License
+
+MIT

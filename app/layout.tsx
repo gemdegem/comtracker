@@ -11,8 +11,8 @@ const fontSans = FontSans({
 })
 
 export const metadata: Metadata = {
-	title: 'COMTRACKER',
-	description: 'TOOLS FOR IDENTIFYING INTERWALLET CONNECTIONS.',
+	title: 'Comtracker — Blockchain Forensics Tool',
+	description: 'Trace fund flows between crypto wallets across Ethereum and Solana. Interactive graph visualization, address labels, and token overlap analysis.',
 }
 
 export default function RootLayout({

@@ -40,3 +40,33 @@ next-env.d.ts
 yarn.lock
 package-lock.json
 pnpm-lock.yaml
+
+# label data (downloaded, not committed)
+/data/raw/
+
+# scraped label data
+etherscan_labels.json
+
+# test & dev scripts
+test-*.mjs
+test_*.mjs
+test_*.js
+test_out.json
+
+# dev utility & reconstruction scripts
+extract.py
+fix_braces.py
+reconstruct*.py
+reconstruct*._py
+reconstructed_*.ts
+pack_dump*.ts
+solana.ts
+depth2_test*.json
+r1.json
+r2.json
+
+# AI context files
+CLAUDE.md
+GEMINI.md
+OVERVIEW.md
+.cursorrules
