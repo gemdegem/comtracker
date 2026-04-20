@@ -44,7 +44,7 @@ Due to API constraints on the free tier:
 ### Need broader capabilities?
 If the public deployment stops working due to quota exhaustion, or if you need to run heavier forensic analysis (deeper hops, wider date ranges, larger wallet networks), you have two options:
 1. **Host it yourself**: Clone the repo, swap in your own [Bitquery API key](https://account.bitquery.io/user/api_v1/api_keys), and run it locally.
-2. **Contact me**: Open a [GitHub Issue](https://github.com/gemdegem/comtracker/issues) to request deeper custom analysis.
+2. **Contact me**: Open a [GitHub Issue](https://github.com/bartdev3/comtracker/issues) to request deeper custom analysis.
 
 ---
 
@@ -72,7 +72,7 @@ If the public deployment stops working due to quota exhaustion, or if you need t
 ### Installation
 
 ```bash
-git clone https://github.com/gemdegem/comtracker.git
+git clone https://github.com/bartdev3/comtracker.git
 cd comtracker
 npm install
 ```
