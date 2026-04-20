@@ -9,7 +9,7 @@ export default function Home() {
 			</div>
 			<div className="absolute bottom-4 left-0 right-0 flex justify-center z-50 text-xs text-slate-500">
 			<Link
-				href="https://github.com/gemdegem/comtracker"
+				href="https://github.com/bartdev3/comtracker"
 				target='_blank'
 				className="hover:text-white transition-colors ease-in-out duration-300 flex items-center gap-1.5"
 			>
