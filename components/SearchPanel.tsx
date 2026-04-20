@@ -335,7 +335,7 @@ export default function SearchPanel({ setSearchData, setHasSearched, onProgressi
         <div className="text-[10px] text-slate-600 leading-relaxed text-center px-2 max-w-[260px]">
           <span className="text-slate-500">ℹ️ Free Plan</span> — This app uses Bitquery&apos;s free tier. For multi-hop searches or larger date ranges,{" "}
           <Link
-            href="https://github.com/gemdegem/comtracker/issues"
+            href="https://github.com/bartdev3/comtracker/issues"
             target="_blank"
             className="text-cyan-600 hover:text-cyan-400 transition-colors underline underline-offset-2"
           >
@@ -344,7 +344,7 @@ export default function SearchPanel({ setSearchData, setHasSearched, onProgressi
           or connect your own API key.
         </div>
         <Link
-          href="https://github.com/gemdegem/comtracker"
+          href="https://github.com/bartdev3/comtracker"
           target="_blank"
           className="text-xs text-slate-500 hover:text-white transition-colors ease-in-out duration-300 flex items-center gap-1.5"
         >
